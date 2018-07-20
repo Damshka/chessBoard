@@ -96,7 +96,7 @@ function createTable(){
 		    a=65;
 		}
 
-		// console.log(i, j);
+		console.log(i, j);
 		// console.log('array with alph');
 		// console.log(arr);
 	
