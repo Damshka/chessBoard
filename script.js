@@ -1,7 +1,8 @@
 // начальные параметры для таблицы
 var cols = 9, rows = 9,
 table_width = 600, table_height = 600,
-color = '#656565', active_color = '#c85959', arr=[];
+color = '#656565', active_color_player1 = '#c85959', active_color_player2='#0acccc', arr=[],
+players_flag = 0, start_flag = 0, start_cell = '', finish_cell = '' ;
 
 function createTable(){
 	var table = document.createElement('table');
@@ -96,11 +97,7 @@ function createTable(){
 		    a=65;
 		}
 
-		console.log(i, j);
-		// console.log('array with alph');
-		// console.log(arr);
-	
- 		
+
 
 
 function AddFigures(){			      
@@ -158,31 +155,22 @@ function AddFigures(){
 	td_1[6].appendChild(black_chess_bishop_1);
 	td_1[7].appendChild(black_chess_knight_1);
 	td_1[8].appendChild(black_chess_rook_1);
-	console.log('________________adding div for click results__________________');
+
 
 	var div = document.createElement('div');
 			document.body.appendChild(div);
 
-	console.log('__________________________________');
-	// console.log(td_all);
 
 
 	for (z=1; z<tr_all.length;z++) {
 			var td_all = tr_all[z].childNodes;
-			// console.log('__________________________________');\
 
-
-		     // console.log(td_all);
-
-		
 
 		for(y=1; y<td_all.length; y++){
-				// console.log('__________________________________');
-		    	 // console.log(td_all[y]);
 
 		    	var computedStyle = getComputedStyle(td_all[y]);
 		       	var backgroundComputedStyle = computedStyle.backgroundColor;
-		       	// console.log(backgroundComputedStyle);
+
  		
 
 					var count = 0;
@@ -192,49 +180,55 @@ function AddFigures(){
 
 		td_all[y].onclick = function cell_click(){
 
-					// cell = this;
-					// console.log(cell);
+
 			        computedStyle = getComputedStyle(this);
 				    backgroundComputedStyle = computedStyle.backgroundColor;
-				   
-				   this.style.backgroundColor = active_color;
-				   // console.log(this);
-				   // console.log('цвет до изменений');
-				   // console.log(backgroundComputedStyle);
+
+				    if (players_flag == 0) {
+				    	if(start_flag == 0) {
+                            this.style.border = '2px solid '+ active_color_player1;
+                            start_flag = 1;
+
+						}
+						else {
+                            this.style.backgroundColor = active_color_player1;
+                            players_flag = 1;
+                            start_flag = 0;
+                        }
+                    }
+                    else{
+                        if(start_flag == 0) {
+                            this.style.border = '2px solid ' + active_color_player2;
+                            start_flag = 1;
+                        }
+                        else {
+                            this.style.backgroundColor = active_color_player2;
+                            players_flag = 0;
+                            start_flag = 0;
+                        }
+					}
+
   		           var newcomputedStyle = getComputedStyle(this);
 		       	   var newbackgroundComputedStyle = computedStyle.backgroundColor;
-		       	   // console.log('цвет после изменений');
-  		         //   	console.log(newbackgroundComputedStyle);
+
   		           	tmp = this;
-  		         //   	console.log('записываем переменную tmp');
-		       	   // console.log(tmp);
+
 		       	    count ++;
-		       	    // console.log('выводим счетчик');
-		       	    // console.log(count);	
+
 		       	          	   
 
 
 		       	     if (count>1) {
-		       	     // 	console.log('___СЧЕТЧИК____');
-		       	     // 	console.log('выводим переменную');
-		       	     // 	console.log('записываем переменную tmp');
-		       	    	// console.log(tmp);
-		       	    	// console.log('записываем переменную temp внутри условия');
-		       	    	// console.log(temp);
+
 		       	    	temp.style.backgroundColor = prevbackgroundComputedStyle;
-		       	     	    
-		       	    	// count = 0;
+		       	    	temp.style.border = 'none';
+
 
 		       	    }
 
 		       	    temp = tmp;
 		       	    prevbackgroundComputedStyle = backgroundComputedStyle;
-		       	    // console.log('temp после функции'); 
-		       	    // console.log(temp); 
-		       	    // console.log('Предыдущий цвет'); 
-		       	    // console.log(prevbackgroundComputedStyle);
-		       	    // console.log(tr_all.length);
-		       	    // console.log(arr); 
+
 
 		       	    for(i=1; i<tr_all.length; i++){
 		       	    		td_all = tr_all[i].childNodes;
@@ -249,58 +243,91 @@ function AddFigures(){
 						}
 
 		       	    if(this) {
+                        var div_result;
 
-		       	    	var div_result = document.createTextNode(this.getAttribute('id'));
-		       	    	// console.log('_________test__________');
-		       	    	// console.log(this.getAttribute('id'));
-		       	    	var br = document.createElement("br");
-						div.appendChild(div_result);
-		 				div.appendChild(br);
+                        if(players_flag === 0) {
+
+
+                        	if(start_flag === 1) {
+                                start_cell = this.getAttribute('id');
+                                // console.log(start_cell, 'start');
+                                // div_result = document.createTextNode(start_cell +  '- player 2');
+
+							}
+							else {
+								// console.log(start_flag, 'start flag');
+                                div_result = document.createTextNode(start_cell +' : ' + this.getAttribute('id') + ' - player 2');
+                                var br = document.createElement("br");
+                                div.appendChild(div_result);
+                                div.appendChild(br);
+                            }
+
+
+						}
+						else {
+
+                            if(start_flag === 1) {
+                                start_cell = this.getAttribute('id');
+                                // console.log(start_cell, 'start');
+                                // div_result = document.createTextNode(start_cell +  '- player 2');
+
+                            }
+                            else {
+                                // console.log(start_flag, 'start flag');
+                                div_result = document.createTextNode(start_cell +' : ' + this.getAttribute('id') + ' - player 1');
+                                var br = document.createElement("br");
+                                div.appendChild(div_result);
+                                div.appendChild(br);
+                            }
+						}
+
+
+
 		       	    	
 
 		       	    }
 
 		  // Перемещение стрелок
 
-
-		   
-		    
-		  addEventListener("keydown", function(event) {
-		  	
-		  	
-		  	 if (event.keyCode == 39) {
-	  		var new_el = temp;
-		  	console.log(new_el);
-		  	var next = new_el.nextSibling; 
-			
-		  	console.log(next);
-		  	cell_click.call(next);
-		  	  	 	
-		  	 	new_el=next;
-		  	 	console.log(new_el);
-		  	 	
-		  	    console.log(next);
-
-
-
-
-
-   			 }
-
-
-   			 if (event.keyCode == 37) {
-
-   			 		var prev_el=temp, prev=prev_el.previousSibling;
-   			 		cell_click.call(prev);
-   			   	    prev_el = prev;
-		       	    console.log(prev);	
-
-
-   			 }
-   			 
-      
-
-  }); 
+  //
+	//
+	//
+	// 	  addEventListener("keydown", function(event) {
+	//
+	//
+	// 	  	 if (event.keyCode == 39) {
+	//   		var new_el = temp;
+	// 	  	console.log(new_el);
+	// 	  	var next = new_el.nextSibling;
+	//
+	// 	  	console.log(next);
+	// 	  	cell_click.call(next);
+	//
+	// 	  	 	new_el=next;
+	// 	  	 	console.log(new_el);
+	//
+	// 	  	    console.log(next);
+  //
+  //
+  //
+  //
+  //
+  //  			 }
+  //
+  //
+  //  			 if (event.keyCode == 37) {
+  //
+  //  			 		var prev_el=temp, prev=prev_el.previousSibling;
+  //  			 		cell_click.call(prev);
+  //  			   	    prev_el = prev;
+	// 	       	    console.log(prev);
+  //
+  //
+  //  			 }
+  //
+  //
+  //
+  // });
 
 		 }
 
