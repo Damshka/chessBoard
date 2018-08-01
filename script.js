@@ -2,7 +2,7 @@
 var cols = 9, rows = 9,
 table_width = 600, table_height = 600,
 color = '#656565', active_color_player1 = '#c85959', active_color_player2='#0acccc', arr=[],
-players_flag = 0, start_flag = 0, start_cell = '', finish_cell = '' ;
+players_flag = 0, start_flag = 0, start_cell = '', figure_flag = 0 ;
 
 function createTable(){
 	var table = document.createElement('table');
@@ -174,164 +174,154 @@ function AddFigures(){
  		
 
 					var count = 0;
-					var tmp, temp;
+					var tmp, temp, temp_figure;
 					var color_white = '#fff';
-					// console.log(color, color_white);
+
 
 		td_all[y].onclick = function cell_click(){
 
 
 			        computedStyle = getComputedStyle(this);
 				    backgroundComputedStyle = computedStyle.backgroundColor;
+					var figure = this.innerHTML; //получаем фигуру
+					console.log(figure);
 
-				    if (players_flag == 0) {
-				    	if(start_flag == 0) {
-                            this.style.border = '2px solid '+ active_color_player1;
-                            start_flag = 1;
+            		if(figure==='' && start_flag === 0 ){
+            			alert('Start with figure!');
+					}
+					else {
 
-						}
-						else {
-                            this.style.backgroundColor = active_color_player1;
-                            players_flag = 1;
-                            start_flag = 0;
-                        }
-                    }
-                    else{
-                        if(start_flag == 0) {
-                            this.style.border = '2px solid ' + active_color_player2;
-                            start_flag = 1;
+                        if (players_flag === 0) {
+                            if (start_flag === 0) {
+                                this.style.border = '2px solid ' + active_color_player1;
+
+                                start_flag = 1;
+
+                            }
+                            else {
+                                this.style.backgroundColor = active_color_player1;
+                                players_flag = 1;
+                                start_flag = 0;
+                            }
                         }
                         else {
-                            this.style.backgroundColor = active_color_player2;
-                            players_flag = 0;
-                            start_flag = 0;
+                            if (start_flag === 0) {
+                                this.style.border = '2px solid ' + active_color_player2;
+                                start_flag = 1;
+                            }
+                            else {
+                                this.style.backgroundColor = active_color_player2;
+                                players_flag = 0;
+                                start_flag = 0;
+                            }
                         }
-					}
+
 
   		           var newcomputedStyle = getComputedStyle(this);
 		       	   var newbackgroundComputedStyle = computedStyle.backgroundColor;
 
   		           	tmp = this;
+					count ++;
 
-		       	    count ++;
-
-		       	          	   
+                        //нужно, чтобы другой игрок начинал со своей фигуры, а действия предыдущего остались, как были
 
 
 		       	     if (count>1) {
-
-		       	    	temp.style.backgroundColor = prevbackgroundComputedStyle;
+		       	     	console.log(temp);
+		       	     	console.log(figure_flag, 'figure_flag');
+						temp_figure = temp.innerHTML; //временная фигура
+						 console.log(temp_figure);
+                        temp.style.backgroundColor = prevbackgroundComputedStyle;
 		       	    	temp.style.border = 'none';
 
 
 		       	    }
 
+
+                        if(temp_figure !== undefined  && figure_flag === 0) {
+                        	console.log(temp, 'temp');
+                            console.log(temp_figure, 'temp-fig');
+                            this.innerHTML = temp_figure;
+                            temp.innerHTML = '';
+                            figure_flag = 1;
+                            console.log(figure_flag, 'figure_flag');
+
+		       	     }
+
+		       	     else if(temp_figure !== undefined && figure_flag === 1) {
+                            console.log(tmp, 'tmp');
+                            tmp.innerHTML = this.innerHTML;
+                            figure_flag = 0;
+                            temp_figure = '';
+                        }
+
 		       	    temp = tmp;
 		       	    prevbackgroundComputedStyle = backgroundComputedStyle;
 
 
+
+
+
+					//Отрисовка полей ходов
+
 		       	    for(i=1; i<tr_all.length; i++){
 		       	    		td_all = tr_all[i].childNodes;
 						     for(j=1; j<td_all.length; j++){
-						    	
+
 
 						    	var num_of_cell = arr[i][j];
 						    	td_all[j].setAttribute('id', num_of_cell);
-						     						 	
+
 						    }
-						    
+
 						}
 
 		       	    if(this) {
                         var div_result;
 
-                        if(players_flag === 0) {
+                        if (players_flag === 0) {
 
 
-                        	if(start_flag === 1) {
+                            if (start_flag === 1) {
                                 start_cell = this.getAttribute('id');
-                                // console.log(start_cell, 'start');
-                                // div_result = document.createTextNode(start_cell +  '- player 2');
-
-							}
-							else {
-								// console.log(start_flag, 'start flag');
-                                div_result = document.createTextNode(start_cell +' : ' + this.getAttribute('id') + ' - player 2');
-                                var br = document.createElement("br");
-                                div.appendChild(div_result);
-                                div.appendChild(br);
-                            }
-
-
-						}
-						else {
-
-                            if(start_flag === 1) {
-                                start_cell = this.getAttribute('id');
-                                // console.log(start_cell, 'start');
-                                // div_result = document.createTextNode(start_cell +  '- player 2');
 
                             }
                             else {
-                                // console.log(start_flag, 'start flag');
-                                div_result = document.createTextNode(start_cell +' : ' + this.getAttribute('id') + ' - player 1');
+
+                                div_result = document.createTextNode('Player 2. ' + temp_figure + ' : ' + start_cell + ' - ' + this.getAttribute('id'));
                                 var br = document.createElement("br");
                                 div.appendChild(div_result);
                                 div.appendChild(br);
                             }
-						}
 
 
+                        }
+                        else {
 
-		       	    	
+                            if (start_flag === 1) {
+                                start_cell = this.getAttribute('id');
+
+                            }
+                            else {
+
+                                div_result = document.createTextNode('Player 1. ' + temp_figure + ' : ' +  start_cell + ' - ' + this.getAttribute('id'));
+                                var br = document.createElement("br");
+                                div.appendChild(div_result);
+                                div.appendChild(br);
+                            }
+                        }
+
+
+                    }
+
 
 		       	    }
 
-		  // Перемещение стрелок
 
-  //
-	//
-	//
-	// 	  addEventListener("keydown", function(event) {
-	//
-	//
-	// 	  	 if (event.keyCode == 39) {
-	//   		var new_el = temp;
-	// 	  	console.log(new_el);
-	// 	  	var next = new_el.nextSibling;
-	//
-	// 	  	console.log(next);
-	// 	  	cell_click.call(next);
-	//
-	// 	  	 	new_el=next;
-	// 	  	 	console.log(new_el);
-	//
-	// 	  	    console.log(next);
-  //
-  //
-  //
-  //
-  //
-  //  			 }
-  //
-  //
-  //  			 if (event.keyCode == 37) {
-  //
-  //  			 		var prev_el=temp, prev=prev_el.previousSibling;
-  //  			 		cell_click.call(prev);
-  //  			   	    prev_el = prev;
-	// 	       	    console.log(prev);
-  //
-  //
-  //  			 }
-  //
-  //
-  //
-  // });
 
 		 }
 
-		 
+
 
 
 
