@@ -107,7 +107,9 @@ function AddFigures(){
 
 	for (var z=1; z < td_2.length; z++ ){
 		black_chess_pawn = document.createTextNode('\u265F');
+
 		td_2[z].appendChild(black_chess_pawn);
+        td_2[z].innerHTML = '<p class="black">' + td_2[z].innerHTML + '</p>';
 
 	}
 	
@@ -115,10 +117,11 @@ function AddFigures(){
 	for (var x=1; x < td_7.length; x++ ){
 		white_chess_pawn = document.createTextNode('\u2659');
 		td_7[x].appendChild(white_chess_pawn);
+        td_7[x].innerHTML = '<p class="white">' + td_7[x].innerHTML + '</p>';
 		
 	}
 
-	white_chess_king = document.createTextNode('\u2654');
+	white_chess_king =  document.createTextNode('\u2654');
 	white_chess_queen = document.createTextNode('\u2655');
 	white_chess_rook = document.createTextNode('\u2656');
 	white_chess_bishop = document.createTextNode('\u2657');
@@ -136,9 +139,7 @@ function AddFigures(){
 	black_chess_knight_1 = document.createTextNode('\u265E');
 
 	td_8[1].appendChild(white_chess_rook);
-	// td_8[1].onclick = function(){
-	// 	alert('hello!');
-	// }
+
 	td_8[2].appendChild(white_chess_knight);
 	td_8[3].appendChild(white_chess_bishop);
 	td_8[4].appendChild(white_chess_queen);
@@ -146,6 +147,15 @@ function AddFigures(){
 	td_8[6].appendChild(white_chess_bishop_1);
 	td_8[7].appendChild(white_chess_knight_1);
 	td_8[8].appendChild(white_chess_rook_1);
+
+    td_8[1].innerHTML = '<p class="white">' + td_8[1].innerHTML + '</p>';
+    td_8[2].innerHTML = '<p class="white">' + td_8[2].innerHTML + '</p>';
+    td_8[3].innerHTML = '<p class="white">' + td_8[3].innerHTML + '</p>';
+    td_8[4].innerHTML = '<p class="white">' + td_8[4].innerHTML + '</p>';
+    td_8[5].innerHTML = '<p class="white">' + td_8[5].innerHTML + '</p>';
+    td_8[6].innerHTML = '<p class="white">' + td_8[6].innerHTML + '</p>';
+    td_8[7].innerHTML = '<p class="white">' + td_8[7].innerHTML + '</p>';
+    td_8[8].innerHTML = '<p class="white">' + td_8[8].innerHTML + '</p>';
 
 	td_1[1].appendChild(black_chess_rook);
 	td_1[2].appendChild(black_chess_knight);
@@ -156,6 +166,14 @@ function AddFigures(){
 	td_1[7].appendChild(black_chess_knight_1);
 	td_1[8].appendChild(black_chess_rook_1);
 
+    td_1[1].innerHTML = '<p class="black">' + td_1[1].innerHTML + '</p>';
+    td_1[2].innerHTML = '<p class="black">' + td_1[2].innerHTML + '</p>';
+    td_1[3].innerHTML = '<p class="black">' + td_1[3].innerHTML + '</p>';
+    td_1[4].innerHTML = '<p class="black">' + td_1[4].innerHTML + '</p>';
+    td_1[5].innerHTML = '<p class="black">' + td_1[5].innerHTML + '</p>';
+    td_1[6].innerHTML = '<p class="black">' + td_1[6].innerHTML + '</p>';
+    td_1[7].innerHTML = '<p class="black">' + td_1[7].innerHTML + '</p>';
+    td_1[8].innerHTML = '<p class="black">' + td_1[8].innerHTML + '</p>';
 
 	var div = document.createElement('div');
 			document.body.appendChild(div);
@@ -171,7 +189,8 @@ function AddFigures(){
 		    	var computedStyle = getComputedStyle(td_all[y]);
 		       	var backgroundComputedStyle = computedStyle.backgroundColor;
 
- 		
+
+           		 console.log(td_all[y].innerHTML);
 
 					var count = 0;
 					var tmp, temp, temp_figure;
@@ -184,7 +203,7 @@ function AddFigures(){
 			        computedStyle = getComputedStyle(this);
 				    backgroundComputedStyle = computedStyle.backgroundColor;
 					var figure = this.innerHTML; //получаем фигуру
-					console.log(figure);
+					// console.log(figure);
 
             		if(figure==='' && start_flag === 0 ){
             			alert('Start with figure!');
@@ -227,10 +246,10 @@ function AddFigures(){
 
 
 		       	     if (count>1) {
-		       	     	console.log(temp);
-		       	     	console.log(figure_flag, 'figure_flag');
+		       	     	// console.log(temp);
+		       	     	// console.log(figure_flag, 'figure_flag');
 						temp_figure = temp.innerHTML; //временная фигура
-						 console.log(temp_figure);
+						 // console.log(temp_figure);
                         temp.style.backgroundColor = prevbackgroundComputedStyle;
 		       	    	temp.style.border = 'none';
 
@@ -239,17 +258,17 @@ function AddFigures(){
 
 
                         if(temp_figure !== undefined  && figure_flag === 0) {
-                        	console.log(temp, 'temp');
-                            console.log(temp_figure, 'temp-fig');
+                        	// console.log(temp, 'temp');
+                            // console.log(temp_figure, 'temp-fig');
                             this.innerHTML = temp_figure;
                             temp.innerHTML = '';
                             figure_flag = 1;
-                            console.log(figure_flag, 'figure_flag');
+                            // console.log(figure_flag, 'figure_flag');
 
 		       	     }
 
 		       	     else if(temp_figure !== undefined && figure_flag === 1) {
-                            console.log(tmp, 'tmp');
+                            // console.log(tmp, 'tmp');
                             tmp.innerHTML = this.innerHTML;
                             figure_flag = 0;
                             temp_figure = '';
